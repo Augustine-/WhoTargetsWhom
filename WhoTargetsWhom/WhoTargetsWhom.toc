@@ -1,0 +1,7 @@
+## Interface: 100200
+## Title: WhoTargetsWhom
+## Notes: Lemme see them targets boy
+## Author: Reallyhim
+## Version: 1.5
+
+Main.lua
