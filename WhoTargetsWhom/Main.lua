@@ -14,6 +14,15 @@
 -- 7. If arena# is dead, their stripes should be hidden.
 -- 8. If multiple arena# units are targeting a single party# unit, then the arena# stripes associated with those units should be visible.
 
+---
+
+-- Issues: 
+-- Bars too small
+-- Bars default visible
+-- 3 Bars in 2s skirmishes
+-- Stripe lingers on dead target
+-- Stripe doesn't reset when targeter enters stealth
+
 
 local interval = 1 -- Time in seconds between checks
 
@@ -32,7 +41,6 @@ local classColors = {
     ["Warlock"] = {0.53, 0.53, 0.93},
     ["Warrior"] = {0.78, 0.61, 0.43}
 }
--- local lastTargetedByArena = {}
 
 local media = LibStub("LibSharedMedia-3.0")
 local frame = CreateFrame("Frame")
@@ -47,7 +55,6 @@ local party = {
 }
 
 local function CreateStripeTextures()
---    print("CreateStripeTextures")
    for i = 1, 3 do
       local partyFrame = cpf.memberUnitFrames[i]
       for j = 1, maxArenaIndex do
@@ -63,6 +70,7 @@ local function CreateStripeTextures()
             else
                 party[i][j]:SetPoint("CENTER", partyFrame, "CENTER", 0, -5)
             end
+            party[i][j]:Hide()
         end
       end
    end
@@ -95,7 +103,6 @@ local function UpdateArenaTargets()
         if UnitExists(arenaUnit) then
             local target = UnitName(arenaUnit.."target")
             if target then
-                -- lastTargetedByArena[arenaUnit] = target
                 for j = 1, GetNumGroupMembers() do
                     local partyUnit = "raid" .. j
                     if UnitIsUnit(partyUnit, target) then
@@ -105,12 +112,17 @@ local function UpdateArenaTargets()
                 end
             else
                 -- if they aren't targeting anyone, hide their stripes
-                for j = 1, 3 do
+                for j = 1, GetNumGroupMembers() do
                     local stripe = party[j][i]
                     stripe:Hide()
                 end
             end
         else
+            -- if they aren't visible, hide stripes
+            for j = 1, GetNumGroupMembers() do
+                local stripe = party[j][i]
+                stripe:Hide()
+            end
         end
     end
 end
@@ -120,7 +132,7 @@ local function DetermineArenaSize()
         maxArenaIndex = 3
     elseif UnitExists("arena2") then
         maxArenaIndex = 2
-    elseif UnitExists("arena1") then
+    else
         maxArenaIndex = 1
     end
     CreateStripeTextures()
