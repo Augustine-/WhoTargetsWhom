@@ -53,7 +53,7 @@ local function CreateStripeTextures()
       for j = 1, maxArenaIndex do
         if not party[i][j] then -- Don't re-create textures we've already made.
             party[i][j] = partyFrame:CreateTexture("party"..i.."arena"..j.."stripe", "OVERLAY")
-            party[i][j]:SetTexture("Interface\\AddOns\\Quartz\\textures\\Blizzard")
+            party[i][j]:SetTexture("Interface\\AddOns\\Quartz\\textures\\Minimalist")
             party[i][j]:SetWidth(width)
             party[i][j]:SetHeight(5)
             if j == 1 then
@@ -137,7 +137,6 @@ end)
 
 frame:SetScript("OnUpdate", function(self, elapsed)
     if not C_PvP.IsArena() then
-        -- lastTargetedByArena = {}
         return -- Only update in arenas.
     end
 
