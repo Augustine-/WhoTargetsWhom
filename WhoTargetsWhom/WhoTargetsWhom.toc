@@ -2,6 +2,8 @@
 ## Title: WhoTargetsWhom
 ## Notes: Lemme see them targets boy
 ## Author: Reallyhim
-## Version: 1.5
+## Version: 1.6
+
+## OptionalDeps: LibSharedMedia-3.0
 
 Main.lua
